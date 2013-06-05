@@ -823,10 +823,11 @@ cc.LabelTTFWebGL = cc.Sprite.extend(/** @lends cc.LabelTTFWebGL# */{
             cc.drawingUtil.drawPoly(verticesG1, 4, true);
         } else if (cc.SPRITE_DEBUG_DRAW === 2) {
             // draw texture box
-            var drawSizeG2 = this.getTextureRect().size;
+            var drawSizeG2Width = this.getTextureRect().width;
+            var drawSizeG2Height = this.getTextureRect().height;
             var offsetPixG2 = this.getOffsetPosition();
-            var verticesG2 = [cc.p(offsetPixG2.x, offsetPixG2.y), cc.p(offsetPixG2.x + drawSizeG2.width, offsetPixG2.y),
-                cc.p(offsetPixG2.x + drawSizeG2.width, offsetPixG2.y + drawSizeG2.height), cc.p(offsetPixG2.x, offsetPixG2.y + drawSizeG2.height)];
+            var verticesG2 = [cc.p(offsetPixG2.x, offsetPixG2.y), cc.p(offsetPixG2.x + drawSizeG2Width, offsetPixG2.y),
+                cc.p(offsetPixG2.x + drawSizeG2Width, offsetPixG2.y + drawSizeG2Height), cc.p(offsetPixG2.x, offsetPixG2.y + drawSizeG2Height)];
             cc.drawingUtil.drawPoly(verticesG2, 4, true);
         } // CC_SPRITE_DEBUG_DRAW
         cc.g_NumberOfDraws++;

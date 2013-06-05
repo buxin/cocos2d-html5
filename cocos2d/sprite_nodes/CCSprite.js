@@ -974,6 +974,7 @@ cc.SpriteCanvas = cc.Node.extend(/** @lends cc.SpriteCanvas# */{
      * Initializes a sprite with a texture and a rect in texture
      * @param {cc.Texture2D|HTMLImageElement|HTMLCanvasElement} texture
      * @param {cc.Rect} rect
+     * @param {Boolean} rotated
      * @return {Boolean}
      * @example
      * var img =cc.TextureCache.getInstance().addImage("HelloHTML5World.png");
@@ -1011,12 +1012,13 @@ cc.SpriteCanvas = cc.Node.extend(/** @lends cc.SpriteCanvas# */{
         if (!rect) {
             rect = cc.rect(0, 0, 0, 0);
             if ((texture instanceof HTMLImageElement) || (texture instanceof HTMLCanvasElement))
-                rect.size = cc.size(texture.width, texture.height);
+                rect.width = texture.width;
+                rect.height = texture.height;
         }
         this._originalTexture = texture;
 
         this.setTexture(texture);
-        this.setTextureRect(rect, rotated, rect.size);
+        this.setTextureRect(rect, rotated, cc.size(rect.width,rect.height));
 
         // by default use "Self Render".
         // if the sprite is added to a batchnode, then it will automatically switch to "batchnode Render"
@@ -1032,7 +1034,7 @@ cc.SpriteCanvas = cc.Node.extend(/** @lends cc.SpriteCanvas# */{
      */
     setTextureRect:function (rect, rotated, untrimmedSize) {
         this._rectRotated = rotated || false;
-        untrimmedSize = untrimmedSize || rect.size;
+        untrimmedSize = untrimmedSize || cc.size(rect.width,rect.height);
 
         this.setContentSize(untrimmedSize);
         this.setVertexRect(rect);
@@ -1274,10 +1276,11 @@ cc.SpriteCanvas = cc.Node.extend(/** @lends cc.SpriteCanvas# */{
         } else if (cc.SPRITE_DEBUG_DRAW === 2) {
             // draw texture box
             context.strokeStyle = "rgba(0,255,0,1)";
-            var drawSize = this._rect.size;
+            var drawSizeWidth = this._rect.width;
+            var drawSizeHeight = this._rect.height;
             flipYOffset = -flipYOffset;
-            var vertices2 = [cc.p(flipXOffset, flipYOffset), cc.p(flipXOffset + drawSize.width, flipYOffset),
-                cc.p(flipXOffset + drawSize.width, flipYOffset - drawSize.height), cc.p(flipXOffset, flipYOffset - drawSize.height)];
+            var vertices2 = [cc.p(flipXOffset, flipYOffset), cc.p(flipXOffset + drawSizeWidth, flipYOffset),
+                cc.p(flipXOffset + drawSizeWidth, flipYOffset - drawSizeHeight), cc.p(flipXOffset, flipYOffset - drawSizeHeight)];
             cc.drawingUtil.drawPoly(vertices2, 4, true);
         }
         cc.g_NumberOfDraws++;
@@ -2215,10 +2218,12 @@ cc.SpriteWebGL = cc.Node.extend(/** @lends cc.SpriteWebGL# */{
 
         if (!rect) {
             rect = cc.rect(0, 0, 0, 0);
-            rect.size = texture.getContentSize();
+            var locTextureSize = texture.getContentSize();
+            rect.width = locTextureSize.width;
+            rect.height = locTextureSize.height;
         }
         this.setTexture(texture);
-        this.setTextureRect(rect, rotated, rect.size);
+        this.setTextureRect(rect, rotated, cc.size(rect.width, rect.height));
 
         // by default use "Self Render".
         // if the sprite is added to a batchnode, then it will automatically switch to "batchnode Render"
@@ -2234,7 +2239,7 @@ cc.SpriteWebGL = cc.Node.extend(/** @lends cc.SpriteWebGL# */{
      */
     setTextureRect:function (rect, rotated, untrimmedSize) {
         this._rectRotated = rotated || false;
-        untrimmedSize = untrimmedSize || rect.size;
+        untrimmedSize = untrimmedSize || cc.size(rect.width, rect.height);
 
         this.setContentSize(untrimmedSize);
         this.setVertexRect(rect);
@@ -2301,12 +2306,13 @@ cc.SpriteWebGL = cc.Node.extend(/** @lends cc.SpriteWebGL# */{
                 //
                 // calculate the Quad based on the Affine Matrix
                 //
-                var size = this._rect.size;
+                var sizeWidth = this._rect.width;
+                var sizeHeight = this._rect.height;
                 var x1 = this._offsetPosition.x;
                 var y1 = this._offsetPosition.y;
 
-                var x2 = x1 + size.width;
-                var y2 = y1 + size.height;
+                var x2 = x1 + sizeWidth;
+                var y2 = y1 + sizeHeight;
                 var x = this._transformToBatch.tx;
                 var y = this._transformToBatch.ty;
 
@@ -2680,10 +2686,11 @@ cc.SpriteWebGL = cc.Node.extend(/** @lends cc.SpriteWebGL# */{
             cc.drawingUtil.drawPoly(verticesG1, 4, true);
         } else if (cc.SPRITE_DEBUG_DRAW === 2) {
             // draw texture box
-            var drawSizeG2 = this.getTextureRect().size;
+            var drawSizeG2Width = this._rect.width;
+            var drawSizeG2Height = this._rect.height;
             var offsetPixG2 = this.getOffsetPosition();
-            var verticesG2 = [cc.p(offsetPixG2.x, offsetPixG2.y), cc.p(offsetPixG2.x + drawSizeG2.width, offsetPixG2.y),
-                cc.p(offsetPixG2.x + drawSizeG2.width, offsetPixG2.y + drawSizeG2.height), cc.p(offsetPixG2.x, offsetPixG2.y + drawSizeG2.height)];
+            var verticesG2 = [cc.p(offsetPixG2.x, offsetPixG2.y), cc.p(offsetPixG2.x + drawSizeG2Width, offsetPixG2.y),
+                cc.p(offsetPixG2.x + drawSizeG2Width, offsetPixG2.y + drawSizeG2Height), cc.p(offsetPixG2.x, offsetPixG2.y + drawSizeG2Height)];
             cc.drawingUtil.drawPoly(verticesG2, 4, true);
         } // CC_SPRITE_DEBUG_DRAW
     }

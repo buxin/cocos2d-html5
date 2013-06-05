@@ -448,12 +448,11 @@ cc.Scale9Sprite = cc.Node.extend(/** @lends cc.Scale9Sprite# */{
 
         // Set the given rect's size as original size
         this._spriteRect = rect;
-        var rectSize = rect.size;
-        this._originalSize = new cc.Size(rectSize.width, rectSize.height);
-        this._preferredSize = new cc.Size(rectSize.width, rectSize.height);
+        var w = rect.width;
+        var h = rect.height;
+        this._originalSize = new cc.Size(w, h);
+        this._preferredSize = new cc.Size(w, h);
         this._capInsetsInternal = capInsets || cc.RectZero();
-        var w = rectSize.width;
-        var h = rectSize.height;
 
         // If there is no specified center region
         if (cc.rectEqualToRect(this._capInsetsInternal, rectZero)) {
@@ -608,15 +607,24 @@ cc.Scale9Sprite = cc.Node.extend(/** @lends cc.Scale9Sprite# */{
             centerbottombounds = cc.RectApplyAffineTransform(centerbottombounds, t);
             centertopbounds = cc.RectApplyAffineTransform(centertopbounds, t);
 
-            rotatedcenterbounds.origin = {x: centerbounds.x, y: centerbounds.y};
-            rotatedrightbottombounds.origin = {x: rightbottombounds.x, y: rightbottombounds.y};
-            rotatedleftbottombounds.origin = {x: leftbottombounds.x, y: leftbottombounds.y};
-            rotatedrighttopbounds.origin = {x: righttopbounds.x, y: righttopbounds.y};
-            rotatedlefttopbounds.origin = {x: lefttopbounds.x, y: lefttopbounds.y};
-            rotatedrightcenterbounds.origin = {x: rightcenterbounds.x, y: rightcenterbounds.y};
-            rotatedleftcenterbounds.origin = {x: leftcenterbounds.x, y: leftcenterbounds.y};
-            rotatedcenterbottombounds.origin = {x: centerbottombounds.x, y: centerbottombounds.y};
-            rotatedcentertopbounds.origin = {x: centertopbounds.x, y: centertopbounds.y};
+            rotatedcenterbounds.x = centerbounds.x;
+            rotatedcenterbounds.y = centerbounds.y;
+            rotatedrightbottombounds.x = rightbottombounds.x;
+            rotatedrightbottombounds.y = rightbottombounds.y;
+            rotatedleftbottombounds.x = leftbottombounds.x;
+            rotatedleftbottombounds.y = leftbottombounds.y;
+            rotatedrighttopbounds.x = righttopbounds.x;
+            rotatedrighttopbounds.y = righttopbounds.y;
+            rotatedlefttopbounds.x = lefttopbounds.x;
+            rotatedlefttopbounds.y = lefttopbounds.y;
+            rotatedrightcenterbounds.x = rightcenterbounds.x;
+            rotatedrightcenterbounds.y = rightcenterbounds.y;
+            rotatedleftcenterbounds.x = leftcenterbounds.x;
+            rotatedleftcenterbounds.y = leftcenterbounds.y;
+            rotatedcenterbottombounds.x = centerbottombounds.x;
+            rotatedcenterbottombounds.y = centerbottombounds.y;
+            rotatedcentertopbounds.x = centertopbounds.x;
+            rotatedcentertopbounds.y = centertopbounds.y;
 
             // Centre
             this._centre = new cc.Sprite();
@@ -664,7 +672,7 @@ cc.Scale9Sprite = cc.Node.extend(/** @lends cc.Scale9Sprite# */{
             this._scale9Image.addChild(this._bottomRight, 2, cc.POSITIONS_BOTTOMRIGHT);
         }
 
-        this.setContentSize(rect.size);
+        this.setContentSize(cc.size(rect.width, rect.height));
         this.addChild(this._scale9Image);
 
         if (this._spritesGenerated) {

@@ -197,37 +197,11 @@ cc.sizeEqualToSize = function (size1, size2) {
  * Constructor
  */
 cc.Rect = function (x1, y1, width1, height1) {
-    switch (arguments.length) {
-        case 0:
-            this.origin = cc.p(0, 0);
-            this.size = cc.size(0, 0);
-            break;
-        case 1:
-            var oldRect = x1;
-            if (!oldRect) {
-                this.origin = cc.p(0, 0);
-                this.size = cc.size(0, 0);
-            } else {
-                if (oldRect instanceof cc.Rect) {
-                    this.origin = cc.p(oldRect.origin.x, oldRect.origin.y);
-                    this.size = cc.size(oldRect.size.width, oldRect.size.height);
-                } else {
-                    throw "unknown argument type";
-                }
-            }
-            break;
-        case 2:
-            this.origin = x1 ? cc.p(x1.x, x1.y) : cc.p(0, 0);
-            this.size = y1 ? cc.size(y1.width, y1.height) : cc.size(0, 0);
-            break;
-        case 4:
-            this.origin = cc.p(x1 || 0, y1 || 0);
-            this.size = cc.size(width1 || 0, height1 || 0);
-            break;
-        default:
-            throw "unknown argument type";
-            break;
-    }
+    //Optimize performance
+    this.x = x1 || 0;
+    this.y = y1 || 0;
+    this.width = width1 || 0;
+    this.height = height1 || 0;
 };
 
 /**
@@ -424,7 +398,7 @@ cc.rectIntersection = function (rectA, rectB) {
 // while HTML5 uses:
 //   rect.origin, rect.size
 //
-cc.Rect.prototype.getX = function() {
+/*cc.Rect.prototype.getX = function() {
     return this.origin.x;
 };
 cc.Rect.prototype.setX = function(x) {
@@ -490,7 +464,7 @@ Object.defineProperties(cc.Rect.prototype,
                         enumerable : true,
                         configurable : true
                     }
-                });
+                });*/
 
 
 // Deprecated

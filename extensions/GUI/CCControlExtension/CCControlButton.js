@@ -84,29 +84,30 @@ cc.ControlButton = cc.Control.extend({
 
         if (this._titleLabel && this._titleLabel.RGBAProtocol)
             this._titleLabel.setColor(this._currentTitleColor);
-        this._titleLabel.setPosition(cc.p(this.getContentSize().width / 2, this.getContentSize().height / 2));
-
+        var locContentSize = this.getContentSize();
+        this._titleLabel.setPosition(cc.p(locContentSize.width / 2, locContentSize.height / 2));
 
         // Update the background sprite
         this._backgroundSprite = this.getBackgroundSpriteForState(this._state);
-        this._backgroundSprite.setPosition(cc.p(this.getContentSize().width / 2, this.getContentSize().height / 2));
+        this._backgroundSprite.setPosition(cc.p(locContentSize.width / 2, locContentSize.height / 2));
 
         // Get the title label size
-        var titleLabelSize = this._titleLabel.getBoundingBox().size;
+        var titleLabelBox = this._titleLabel.getBoundingBox();
+        var titleLabelWidth = titleLabelBox.width;
+        var titleLabelHeight = titleLabelBox.height;
 
         // Adjust the background image if necessary
         if (this._adjustBackgroundImage) {
             // Add the margins
-            this._backgroundSprite.setContentSize(cc.SizeMake(titleLabelSize.width + this._marginH * 2, titleLabelSize.height + this._marginV * 2));
+            this._backgroundSprite.setContentSize(cc.SizeMake(titleLabelWidth + this._marginH * 2, titleLabelHeight + this._marginV * 2));
         } else {
             //TODO: should this also have margins if one of the preferred sizes is relaxed?
             var preferredSize = this._backgroundSprite.getPreferredSize();
-            if (preferredSize.width <= 0) {
-                preferredSize.width = titleLabelSize.width;
-            }
-            if (preferredSize.height <= 0) {
-                preferredSize.height = titleLabelSize.height;
-            }
+            if (preferredSize.width <= 0)
+                preferredSize.width = titleLabelWidth;
+
+            if (preferredSize.height <= 0)
+                preferredSize.height = titleLabelHeight;
 
             this._backgroundSprite.setContentSize(preferredSize);
         }
@@ -114,9 +115,9 @@ cc.ControlButton = cc.Control.extend({
         // Set the content size
         var maxRect = cc.ControlUtils.CCRectUnion(this._titleLabel.getBoundingBox(), this._backgroundSprite.getBoundingBox());
         this.setContentSize(cc.SizeMake(maxRect.width, maxRect.height));
-
-        this._titleLabel.setPosition(cc.p(this.getContentSize().width / 2, this.getContentSize().height / 2));
-        this._backgroundSprite.setPosition(cc.p(this.getContentSize().width / 2, this.getContentSize().height / 2));
+        locContentSize = this.getContentSize();
+        this._titleLabel.setPosition(cc.p(locContentSize.width / 2, locContentSize.height / 2));
+        this._backgroundSprite.setPosition(cc.p(locContentSize.width / 2, locContentSize.height / 2));
 
         // Make visible the background and the label
         this._titleLabel.setVisible(true);

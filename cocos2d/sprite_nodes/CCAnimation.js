@@ -194,9 +194,12 @@ cc.Animation = cc.Class.extend(/** @lends cc.Animation# */{
         var texture = cc.TextureCache.getInstance().addImage(fileName);
         var rect = cc.RectZero();
         if ((texture instanceof HTMLImageElement) || (texture instanceof HTMLCanvasElement)) {
-            rect.size = cc.size(texture.width, texture.height);
+            rect.width = texture.width;
+            rect.height = texture.height;
         } else {
-            rect.size = texture.getContentSize();
+            var textureSize = texture.getContentSize();;
+            rect.width = textureSize.width;
+            rect.height = textureSize.height;
         }
         var frame = cc.SpriteFrame.createWithTexture(texture, rect);
         this.addSpriteFrame(frame);

@@ -681,7 +681,7 @@ cc.LabelBMFont = cc.SpriteBatchNode.extend(/** @lends cc.LabelBMFont# */{
                     if (cc.renderContextType === cc.CANVAS)
                         fontChar.initWithTexture(this.getTexture(), rect, false);
                     else
-                        fontChar.setTextureRect(rect, false, rect.size);
+                        fontChar.setTextureRect(rect, false,cc.size(rect.width,rect.height));
                     // restore to default in case they were modified
                     fontChar.setVisible(true);
                     fontChar.setOpacity(255);

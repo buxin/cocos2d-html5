@@ -67,7 +67,7 @@ cc.ControlSlider = cc.Control.extend({
         // Stretches content proportional to newLevel
         var textureRect = this._progressSprite.getTextureRect();
         textureRect = cc.RectMake(textureRect.x, textureRect.y, percent * this._backgroundSprite.getContentSize().width, textureRect.height);
-        this._progressSprite.setTextureRect(textureRect, this._progressSprite.isTextureRectRotated(), textureRect.size);
+        this._progressSprite.setTextureRect(textureRect, this._progressSprite.isTextureRectRotated(), cc.size(textureRect.width,textureRect.height));
         this.sendActionsForControlEvents(cc.CONTROL_EVENT_VALUECHANGED);
     },
 
